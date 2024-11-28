@@ -1,0 +1,15 @@
+---
+title: "Tossing a Coin: Preferences for Random Allocation in Triage Decisions"
+output: html_notebook
+---
+
+# Versions
+
+# Packages
+
+# Data preparation
+
+# Figures
+
+## Figure 1
+
