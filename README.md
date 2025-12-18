@@ -1,9 +1,10 @@
-# Keßler, P., Näher A.-F., Krumpal, I. 2024. Tossing a Coin: Preferences for Random Allocation in Triage Decisions.
-The repository entails the data and analysis files for the following paper: Keßler, P., Näher, A.-F., and Krumpal, I (forthcoming). Tossing a Coin: Preferences for Random Allocation in Triage Decisions.
+# Keßler, P., Näher A.-F., Krumpal, I. 2026. Tossing a Coin: Preferences for Rank-ordering in Triage Decisions.
+The repository entails the data and analysis files for the following paper: Keßler, P., Näher, A.-F., and Krumpal, I (2006). Tossing a Coin: Preferences for Rank-ordering in Triage Decisions.
 
 ## Abstract
 
 The discussion about the fair allocation of scarce medical resources gained traction during the COVID-19 pandemic. Expert ethics suggest the application of a rank-ordering approach to triage. More specifically, it has been argued to apply criteria to maximize the overall treatment benefits, i.e., select the persons with the highest chance of survival and the lowest age, and apply equality if the patients in question are equal in these regards. Equality in this sense is operationalized with an allocation by random lottery. While there is a growing body of research on preferences of the public in triage decisions, evidence for preferences in accordance with a rank-ordering approach is lacking. We study a broad general public (N = 1,998) and assess their preferences in accordance with a rank-ordering approach by using a conjoint experiment. We find that persons generally allocate a respiratory ventilator to the person with the highest chance of survival and the lowest age. If the patients in question are equal in these dimensions, they tend to allocate the ventilator by random lottery. Additionally, the outcomes of a selection by random lottery are mainly evaluated as fair if the chance of survival and the age of the patients is equal. Therefore, we find a close match between the rank-ordering approach and preferences of the general public. We discuss implications and give guidance for future research.
 
 ## Usage
+
 To replicate our findings, the code in the file "analysis.rmd" should be used. Please note the R and Package Versions used in the initial analysis. You can find all these informations in the markdown file.

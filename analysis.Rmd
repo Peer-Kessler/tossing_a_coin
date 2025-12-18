@@ -48,6 +48,7 @@ loaded via a namespace (and not attached):
 #> install.packages("survival")
 #> install.packages("bife")
 #> install.packages("janitor")
+#> install.packages("sjPlot")
 #> install.packages("ggthemes")
 #> install.packages("tidyverse")
 
@@ -59,8 +60,9 @@ library(margins)
 library(survival)
 library(bife)
 library(janitor)
-library(tidyverse)
+library(sjPlot)
 library(ggthemes)
+library(tidyverse)
 ```
 
 # Data preparation
@@ -892,3 +894,214 @@ data %>%
        ) %>% 
   summary()
 ```
+
+# Appendix
+
+## Marginal means
+
+```{r}
+data %>% 
+  select("id", 
+         contains("vig_")
+         ) %>% 
+  filter(vig_choice != 3) %>% 
+  lmer(formula = vig_choice ~ vig_weight + 
+                              vig_age + 
+                              vig_chance_of_survival_with_ventilation +
+                              vig_ventilation_status + 
+                              vig_children +
+                              vig_disability + 
+                              vig_volunteer_work + 
+                              vig_vaccination_status + 
+                              (1|id),
+       data = .
+       ) %>% 
+  plot_model(type = "pred",
+           ci.lvl = 0.95,
+           colors = "bw"
+           ) %>% 
+  imap(., ~ .x[["data"]] %>% 
+                as.data.frame() %>% 
+                as_tibble() %>% 
+                arrange(x) %>% 
+             mutate(
+               variable = .y,
+               x_label = levels(data[[.y]])   
+               )
+     ) %>% 
+  bind_rows() %>%
+  mutate(group_col = factor(group_col,
+                            levels = c("vig_chance_of_survival_with_ventilation",
+                                       "vig_age",
+                                       "vig_disability",
+                                       "vig_weight",
+                                       "vig_ventilation_status",
+                                       "vig_vaccination_status",
+                                       "vig_volunteer_work",
+                                       "vig_children"),
+                            labels = c("Chance of survival with ventilation",
+                                       "Age",
+                                       "Disability",
+                                       "Weight",
+                                       "Ventilation status",
+                                       "Vaccination status",
+                                       "Volunteer work",
+                                       "Children")
+                            )
+         ) %>%
+  mutate(x_label = factor(x_label,
+                    levels = c("20% chance of survival", 
+                               "50% chance of survival",
+                               "80% chance of survival",
+                               "25 years old",
+                               "50 years old",
+                               "75 years old",
+                               "Has no disability",
+                               "Has a disability",
+                               "Not overweight",
+                               "Overweight",
+                               "Not ventilated yet",
+                               "Is already ventilated",
+                               "Is not vaccinated",
+                               "Is vaccinated",
+                               "Does not volunteer work",
+                               "Does volunteer work",
+                               "Has no children",
+                               "Has children")
+                    ),
+         x_label = fct_rev(x_label)
+         ) %>% 
+  ggplot(mapping = aes(x = predicted,
+                       y = x_label,
+                       xmin = conf.low,
+                       xmax = conf.high
+                       )
+         ) +
+  geom_point() +
+  geom_errorbar() +
+  labs(x = "Marginal means",
+       y = "") +
+  facet_wrap(vars(group_col),
+             ncol = 1,
+             scales = "free_y",
+             # switch = "y",
+            strip.position = "top") +
+  theme_clean() +
+  theme(text = element_text(size = 12,
+                            family = "serif"
+                            ),
+        plot.background = element_blank()
+        )
+
+ggsave("figures/plot1.pdf",
+       dpi = 800,
+       width = 16.58,
+       height = 11.26,
+       units = "cm")
+
+```
+
+## Sub-group analyses
+
+### N. America vs. Europe
+
+```{r}
+data %>% 
+  select("id", 
+         contains("vig_")
+         ) %>% 
+  filter(vig_choice != 3) %>% 
+  split(.$)
+  lmer(formula = vig_choice ~ vig_weight + 
+                              vig_age + 
+                              vig_chance_of_survival_with_ventilation +
+                              vig_ventilation_status + 
+                              vig_children +
+                              vig_disability + 
+                              vig_volunteer_work + 
+                              vig_vaccination_status + 
+                              (1|id),
+       data = .
+       ) %>% 
+  plot_model(type = "pred",
+           ci.lvl = 0.95,
+           colors = "bw"
+           ) %>% 
+  imap(., ~ .x[["data"]] %>% 
+                as.data.frame() %>% 
+                as_tibble() %>% 
+                arrange(x) %>% 
+             mutate(
+               variable = .y,
+               x_label = levels(data[[.y]])   
+               )
+     ) %>% 
+  bind_rows() %>%
+  mutate(group_col = factor(group_col,
+                            levels = c("vig_chance_of_survival_with_ventilation",
+                                       "vig_age",
+                                       "vig_disability",
+                                       "vig_weight",
+                                       "vig_ventilation_status",
+                                       "vig_vaccination_status",
+                                       "vig_volunteer_work",
+                                       "vig_children"),
+                            labels = c("Chance of survival with ventilation",
+                                       "Age",
+                                       "Disability",
+                                       "Weight",
+                                       "Ventilation status",
+                                       "Vaccination status",
+                                       "Volunteer work",
+                                       "Children")
+                            )
+         ) %>%
+  mutate(x_label = factor(x_label,
+                    levels = c("20% chance of survival", 
+                               "50% chance of survival",
+                               "80% chance of survival",
+                               "25 years old",
+                               "50 years old",
+                               "75 years old",
+                               "Has no disability",
+                               "Has a disability",
+                               "Not overweight",
+                               "Overweight",
+                               "Not ventilated yet",
+                               "Is already ventilated",
+                               "Is not vaccinated",
+                               "Is vaccinated",
+                               "Does not volunteer work",
+                               "Does volunteer work",
+                               "Has no children",
+                               "Has children")
+                    ),
+         x_label = fct_rev(x_label)
+         ) %>% 
+  ggplot(mapping = aes(x = predicted,
+                       y = x_label,
+                       xmin = conf.low,
+                       xmax = conf.high
+                       )
+         ) +
+  geom_point() +
+  geom_errorbar() +
+  labs(x = "Marginal means",
+       y = "") +
+  facet_wrap(vars(group_col),
+             ncol = 1,
+             scales = "free_y",
+             # switch = "y",
+            strip.position = "top") +
+  theme_clean() +
+  theme(text = element_text(size = 12,
+                            family = "serif"
+                            ),
+        plot.background = element_blank()
+        )
+```
+
+
+
+
+
