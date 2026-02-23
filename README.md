@@ -1,5 +1,5 @@
 # Keßler, P., Näher A.-F., Krumpal, I. 2026. Tossing a Coin: Preferences for Rank-ordering in Triage Decisions.
-The repository entails the data and analysis files for the following paper: Keßler, P., Näher, A.-F., and Krumpal, I (2006). Tossing a Coin: Preferences for Rank-ordering in Triage Decisions.
+The repository entails the data and analysis files for the following paper: Keßler, P., Näher, A.-F., and Krumpal, I (2026). Tossing a Coin: Preferences for Rank-ordering in Triage Decisions.
 
 Additionally, the repository contains the Appendix to the article.
 
